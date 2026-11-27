@@ -107,7 +107,20 @@ Also part of the core in weeks 1 and 2: ADRs, personal data hidden from the mode
 
 ## Commands
 
-To be filled in when the project is scaffolded: install, run, test, lint and evals.
+First time: copy `.env.example` to `.env` and fill in the passwords.
+
+From the repository root:
+
+- Start the database: `docker compose up -d --wait db`
+- Stop it: `docker compose down` (add `-v` to delete the data and run the init scripts again)
+
+From `backend/`:
+
+- Install dependencies: `uv sync`
+- Run migrations: `uv run alembic upgrade head`
+- Run the tests (the database must be running): `uv run pytest`
+
+Lint, the web app and evals are added when they exist.
 
 ## Skills
 
