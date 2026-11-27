@@ -1,4 +1,4 @@
-# Secretos
+# Secrets
 .env
 .env.*
 !.env.example
@@ -22,15 +22,16 @@ playwright-report/
 test-results/
 *.tsbuildinfo
 
-# Datos locales
+# Local data
 *.dump
 pgdata/
+db/data/
 
-# Sistema y editores
+# System and editors
 .DS_Store
 .idea/
 .vscode/
 
-# Claude Code: configuración personal
+# Claude Code: personal settings
 .claude/settings.local.json
 CLAUDE.local.md

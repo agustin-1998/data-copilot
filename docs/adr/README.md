@@ -6,9 +6,8 @@ One page per decision, each with its trade-off. New records start from [0000-tem
 
 - [0001. LLM strategy: two entry points over one core](0001-llm-strategy-two-entry-points.md)
 - [0002. Repository layout: one Python package and a separate web app](0002-repository-layout.md)
+- [0003. Sample dataset: Olist with synthetic personal data](0003-sample-dataset-olist.md)
 - [0004. Database migrations: Alembic with hand-written SQL](0004-database-migrations-alembic.md)
-
-ADR 0003 (sample dataset: Olist with synthetic personal data) is decided and is recorded with the issue that loads the data.
 
 ## Pending
 

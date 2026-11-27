@@ -33,6 +33,20 @@ class Settings(BaseSettings):
         """Read-only connection: the only one the agent uses."""
         return self._url(READER_ROLE, self.copilot_reader_password)
 
+    def connect_kwargs(self, role: str) -> dict[str, str | int]:
+        """Arguments for `psycopg.connect` as `role` (owner or reader)."""
+        passwords = {
+            OWNER_ROLE: self.copilot_owner_password,
+            READER_ROLE: self.copilot_reader_password,
+        }
+        return {
+            "host": self.database_host,
+            "port": self.database_port,
+            "dbname": self.database_name,
+            "user": role,
+            "password": passwords[role].get_secret_value(),
+        }
+
     def _url(self, role: str, password: SecretStr) -> URL:
         return URL.create(
             "postgresql+psycopg",
