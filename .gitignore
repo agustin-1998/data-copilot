@@ -1,0 +1,36 @@
+# Secretos
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+.next/
+out/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# Datos locales
+*.dump
+pgdata/
+
+# Sistema y editores
+.DS_Store
+.idea/
+.vscode/
+
+# Claude Code: configuración personal
+.claude/settings.local.json
+CLAUDE.local.md
