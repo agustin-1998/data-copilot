@@ -3,6 +3,8 @@
 - **Status:** Accepted
 - **Date:** 2026-11-27
 
+> I chose one core with two entry points, a local MCP server that uses the connected agent's model and a web app whose LangGraph agent calls a free-tier API, because people can use the agent they already have without me paying for it and every safety rule lives in one place; what I pay is that locally the agent, not my graph, decides the order of the steps, and two entry points to maintain; if Claude Code or the other agents add MCP sampling, I move LangGraph inside the MCP server and use the agent's model.
+
 ## Context
 
 Data Copilot needs a language model to turn questions into SQL. This is a portfolio project, so there is no budget for a paid model API. People who clone the repository should be able to use it with the agent they already have (Claude Code, Codex, Gemini CLI). There should also be an online demo that anyone can try without installing anything. The owner's personal subscription must never serve other people's requests.

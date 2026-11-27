@@ -7,7 +7,9 @@ description: Teach the owner a topic before it is used in the project (for examp
 
 Goal: the owner can explain the topic in a job interview, in their own words, and knows where it shows up in this project.
 
-Speak Spanish (Rioplatense). Keep code and technical terms in English.
+Speak Spanish (Rioplatense). Keep code and technical terms in English. Ask one question at a time. Keep answers short and simple, with examples.
+
+Teach just in time: only what the current task needs, right before it is used.
 
 ## Steps
 
@@ -16,7 +18,7 @@ Speak Spanish (Rioplatense). Keep code and technical terms in English.
 3. **Technical layer.** How it really works. The one or two details interviewers usually ask about. A small example in this project's domain (orders, customers, sales), not `foo`/`bar`.
 4. **Where it lands.** Which part of Data Copilot uses it, and why we need it there.
 5. **Explain it back, twice.** Ask the owner to explain it in their own words. Then ask for a second explanation applied to a different case, framed as an interview follow-up question.
-6. **Correct.** Only what is wrong or important. Skip style and wording nitpicks.
+6. **Correct.** Only what is wrong or important. Skip style and wording nitpicks. Have the owner repeat the corrected part.
 7. **Close.** One-line summary and one likely interview question the owner can practice.
 
 ## Do not

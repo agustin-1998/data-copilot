@@ -8,6 +8,8 @@ Data Copilot is a text-to-SQL agent over a sample e-commerce PostgreSQL database
 
 Target: a working, published demo in the second week of December 2026.
 
+It is also practice for technical interviews and coding challenges, so we work like a real job: small issues, branches, pull requests, CI and code review.
+
 Core ideas:
 
 - **Semantic layer.** A dictionary of tables and business metrics (what a "sale" is, what an "active customer" is). The agent builds SQL from it, not blindly from the raw schema.
@@ -27,39 +29,56 @@ Core ideas:
 
 Everything else is not decided yet. Open decisions are listed in `docs/adr/README.md`. Do not assume an answer: ask the owner.
 
-## Who writes what
+## Roles
 
-The owner (the human in this session) decides the architecture and writes the core.
+The owner (the human in this session) is the tech lead and decides architecture, patterns and trade-offs. Claude proposes options, each with its trade-off, and the owner chooses. If something the owner asks for is a bad idea technically, say so and explain why.
 
-Core, written by the owner and reviewed by Claude:
+**Hard rule: if the owner cannot explain it in a job interview, it does not get merged.** When a diff brings in something new (a library, a pattern, a trick), flag it and check that the owner can explain it.
+
+### Core: the owner writes it by hand
 
 - The LangGraph graph (state, nodes, edges).
 - SQL validation.
 - The semantic layer.
-- The FastAPI endpoint for the agent.
+- The main FastAPI endpoint.
 - The evals (questions, expected results, scoring).
 
-Claude does not write core code, even when asked in passing. In core files Claude explains, reviews and describes the fix in words or in a snippet of five lines or fewer. The owner applies it.
+Claude never writes core code for the owner. Claude may:
 
-Claude in this session:
+- Write, when it applies, the pytest tests the owner's code has to pass, before the owner implements it.
+- Give hints when the owner is stuck, one level at a time: first the idea, then pseudocode, then a fragment. Never the full solution, unless the owner says "mostrame".
 
-- Teaches each topic before it is used (`/teach`).
-- Reviews the owner's code (`/review`).
-- Writes specs (`/spec`) and docs: ADRs after the owner decides (`/adr`), README, runbooks.
+### Delegated: Claude writes it, or the owner's agents when the owner brings them in
 
-The owner's hu-flow agents do the scaffolding, UI, tests, CI and deployment, working from specs in `docs/specs/`.
+Scaffolding, Docker, UI, tests, CI, deployment and docs.
 
-**Hard rule: if the owner cannot explain it in a job interview, it does not get merged.** When a diff brings in something new (a library, a pattern, a trick), flag it and check that the owner can explain it.
+- Before writing code, Claude needs the owner's directive: what to build, the architecture, the pattern and why. If the directive is missing, ask for it.
+- Implement in small steps.
+- Before closing, ask the owner one or two questions about the diff to check that they understand it.
+
+## Task cycle
+
+1. **Issue.** Claude drafts a short GitHub issue: goal, acceptance criteria and out of scope, labelled `core` or `delegated`. The owner approves it before it is created (`/issue`).
+2. **Just-in-time theory.** If the task uses something the owner does not know yet, teach it first (`/teach`). No reading documentation ahead of time.
+3. **Branch.** `feature/<issue-number>-<short-description>`, for example `feature/12-sql-validator`.
+4. **Work.** Core: tests first when they apply, the owner implements, hints in three levels. Delegated: small steps, then one or two questions about the diff.
+5. **Review** like a senior engineer (`/review`): correctness, security, naming and trade-offs. Only what matters, most severe first.
+6. **Close.** CI green, a pull request with a description, and the owner merges. If the task involved a decision, write an ADR (`/adr`) and add one line to `docs/interview-notes.md`: "In my project, I…".
+
+## Sessions
+
+- **Start:** read `docs/progress.md` and tell the owner, in three lines, where we left off and what we do today.
+- **End:** run `/close-session`.
 
 ## Language
 
-- Everything in the repository is in English: code, identifiers, comments, docs, ADRs, specs, commit messages, branch names, PR titles and descriptions, issues.
+- Everything in the repository is in English: code, identifiers, comments, docs, ADRs, issues, commit messages, branch names, PR titles and descriptions.
 - Conversation with the owner is in Spanish (Rioplatense).
 
 ## Git workflow
 
-- No direct commits to `main`. Every change goes on a branch and through a pull request.
-- Branch names: `<type>/<short-kebab-description>`, for example `feat/sql-validator`. Types: `feat`, `fix`, `chore`, `docs`, `test`, `ci`, `refactor`.
+- No direct commits to `main`. Every change goes on a branch and through a pull request that references its issue (`Closes #12`).
+- Branch names follow the task cycle: `feature/<issue-number>-<short-description>`.
 - Commit messages follow Conventional Commits: `feat: add read-only role`, `fix(api): handle empty result`. Imperative mood, lowercase, no final period.
 - Claude commits, pushes and opens pull requests only when the owner says so. Claude never merges a pull request, never force-pushes and never rewrites `main`.
 
@@ -73,8 +92,8 @@ The owner's hu-flow agents do the scaffolding, UI, tests, CI and deployment, wor
 ## Architecture Decision Records
 
 - One page per decision: `docs/adr/NNNN-kebab-title.md`, copied from `docs/adr/0000-template.md`.
-- Every ADR states its trade-off: what we give up.
-- The owner decides. Claude may lay out options and recommend one, and drafts the ADR only after the decision.
+- Every ADR opens with one sentence: "I chose X because …; what I pay is …; if Y changes, I move to Z."
+- The owner decides. Claude lays out options and recommends one, and drafts the ADR only after the decision.
 - Use `/adr`.
 
 ## Roadmap
@@ -92,7 +111,8 @@ To be filled in when the project is scaffolded: install, run, test, lint and eva
 
 ## Skills
 
-- `/teach <topic>`: teach a topic before it is used.
+- `/issue`: draft the issue for the next task and create it once the owner approves.
+- `/teach <topic>`: teach a topic just before it is used.
+- `/review`: review a branch or files like a senior engineer.
 - `/adr <decision>`: lay out options or record a decision.
-- `/review`: review the owner's code.
-- `/spec <feature>`: write a spec for the hu-flow agents.
+- `/close-session`: update `docs/progress.md` and practice interview questions.

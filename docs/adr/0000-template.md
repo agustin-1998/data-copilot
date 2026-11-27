@@ -3,6 +3,8 @@
 - **Status:** Proposed | Accepted | Superseded by NNNN
 - **Date:** YYYY-MM-DD
 
+> I chose X because …; what I pay is …; if Y changes, I move to Z.
+
 ## Context
 
 What problem we are solving and which constraints apply. Three to six lines.
