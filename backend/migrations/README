@@ -1,0 +1,2 @@
+Alembic migrations. Each one is written by hand in SQL with op.execute (ADR 0004).
+Run from backend/: uv run alembic upgrade head

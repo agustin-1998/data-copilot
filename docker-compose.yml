@@ -1,0 +1,24 @@
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME:-copilot}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      # Read by db/init/01-roles.sh when the volume is created.
+      COPILOT_OWNER_PASSWORD: ${COPILOT_OWNER_PASSWORD:?Set COPILOT_OWNER_PASSWORD in .env}
+      COPILOT_READER_PASSWORD: ${COPILOT_READER_PASSWORD:?Set COPILOT_READER_PASSWORD in .env}
+    ports:
+      # Only reachable from this machine.
+      - "127.0.0.1:${DATABASE_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:
