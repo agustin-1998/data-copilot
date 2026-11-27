@@ -1,0 +1,55 @@
+name: backend
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Backend tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v10.4.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: backend/uv.lock
+
+      # The database only lives for this run, so its passwords are generated
+      # here and thrown away. No repository secrets are needed.
+      - name: Create .env with throwaway passwords
+        run: |
+          cp .env.example .env
+          for name in POSTGRES_PASSWORD COPILOT_OWNER_PASSWORD COPILOT_READER_PASSWORD; do
+            sed -i "s|^${name}=$|${name}=$(openssl rand -hex 16)|" .env
+          done
+
+      # Same compose file and init script as on a developer machine.
+      - name: Start PostgreSQL
+        run: docker compose up -d --wait db
+
+      - name: Install dependencies (fails if uv.lock is out of date)
+        working-directory: backend
+        run: uv sync --locked
+
+      - name: Run migrations
+        working-directory: backend
+        run: uv run alembic upgrade head
+
+      - name: Run tests
+        working-directory: backend
+        run: uv run pytest
+
+      - name: Show database logs
+        if: failure()
+        run: docker compose logs db
