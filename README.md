@@ -1,5 +1,5 @@
-# Copiloto de datos
+# Data Copilot
 
-Agente text-to-SQL: hacés una pregunta en lenguaje natural sobre un e-commerce y devuelve el número, la query que usó y un gráfico.
+A text-to-SQL agent: ask a question about an e-commerce business in plain language and get back the number, the SQL it ran and a chart.
 
-En construcción.
+Work in progress. Design decisions are recorded in [docs/adr](docs/adr/README.md).
