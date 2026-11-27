@@ -118,7 +118,8 @@ From `backend/`:
 
 - Install dependencies: `uv sync`
 - Run migrations: `uv run alembic upgrade head`
-- Run the tests (the database must be running): `uv run pytest`
+- Load the Olist data (downloads it the first time, about 45 MB): `uv run python -m data_copilot.seed`
+- Run the tests (the database must be running; they also reload the data): `uv run pytest`
 
 Lint, the web app and evals are added when they exist.
 
